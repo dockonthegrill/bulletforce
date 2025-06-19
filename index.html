@@ -3,23 +3,86 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title></title>
+    <title>Bullet Force WebGL</title>
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="style.css">
-    <script src="UnityProgress.js"></script>  
+    <script src="UnityProgress.js"></script>
     <script src="UnityLoader.js"></script>
     <script>
-      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/BulletForceWebGL_New.json", {onProgress: UnityProgress});
+      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/BulletForceWebGL_New.json", {
+        onProgress: UnityProgress
+      });
     </script>
+    <style>
+      body {
+        margin: 0;
+        background: #000;
+        overflow: hidden;
+      }
+      #splashScreen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        color: #00ffcc;
+        font-family: 'Arial', sans-serif;
+        font-size: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        transition: opacity 0.8s ease;
+      }
+      .webgl-content {
+        text-align: center;
+        position: relative;
+        z-index: 0;
+      }
+      .footer {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+      }
+      .fullscreen {
+        background: url('fullscreen.png') no-repeat center;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        margin: 0 10px;
+      }
+      .title {
+        font-weight: bold;
+        color: #00ffcc;
+      }
+    </style>
   </head>
   <body>
+    <div id="splashScreen">Ported by dockonthegrill</div>
+
     <div class="webgl-content">
-      <div id="gameContainer" style="width: 960px; height: 540px"></div>
+      <div id="gameContainer" style="width: 960px; height: 540px; margin: auto;"></div>
       <div class="footer">
-        <div class="webgl-logo"></div>
         <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
         <div class="title">Bullet Force WebGL</div>
       </div>
     </div>
+
+    <script>
+      // Fade out splash once Unity loads
+      var splash = document.getElementById("splashScreen");
+      var checkLoaded = setInterval(function () {
+        if (typeof gameInstance !== 'undefined' && gameInstance.Module && gameInstance.Module.canvas) {
+          splash.style.opacity = '0';
+          setTimeout(() => splash.remove(), 800);
+          clearInterval(checkLoaded);
+        }
+      }, 500);
+    </script>
   </body>
 </html>
